@@ -12,7 +12,7 @@ spec:
           - path: adventures/01-echoes-lost-in-orbit/beginner/manifests/overlays/*
   template:
     metadata:
-      name: echo-server
+      name: echo-server-{{path.basename}}
       labels:
         app.kubernetes.io/managed-by: argocd
     spec:
@@ -23,7 +23,7 @@ spec:
         path: adventures/01-echoes-lost-in-orbit/beginner/manifests/overlays/{{path.basename}}
       destination:
         server: https://kubernetes.default.svc
-        namespace: echo-{{index .path.segments 0}}
+        namespace: echo-{{path.basename}}
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
