@@ -33,7 +33,7 @@ spec:
           query: |
             # Check how many containers are ready (should be at least 1)
             sum(kube_pod_container_status_ready{
-            namespace="{{args.namespace}}",
-            pod="echo-server-.*",
-            container=".*"
+              namespace="{{args.namespace}}",
+              pod=~"echo-server-.*",
+              container=~".*"
             }) or vector(0)
