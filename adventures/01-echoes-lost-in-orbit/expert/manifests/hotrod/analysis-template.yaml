@@ -51,5 +51,6 @@ spec:
                   hotrod_pod_hash="{{args.canary-hash}}"
                 }[2m])
               )
-            )
+            ) OR on() vector(0)
+
 
