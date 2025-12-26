@@ -9,8 +9,9 @@ data:
     receivers:
       otlp:
         protocols:
-          grpc: {}    
-          http: {}    
+          grpc: {}
+          http: {}
+
     connectors:
       spanmetrics:
         dimensions:
@@ -21,13 +22,15 @@ data:
     exporters:
       debug:
         verbosity: detailed
+
       otlp:
         endpoint: jaeger-collector.jaeger.svc.cluster.local:4317
         tls:
           insecure: true
 
-        prometheus:
-          endpoint: "0.0.0.0:8889"
+      prometheus:
+        endpoint: "0.0.0.0:8889"
+
     extensions:
       health_check:
         endpoint: 0.0.0.0:13133
@@ -38,7 +41,7 @@ data:
         traces:
           receivers: [otlp]
           exporters: [debug, otlp, spanmetrics]
+
         metrics:
           receivers: [spanmetrics]
-          exporters: [prometheus,debug]
-          
+          exporters: [prometheus, debug]
