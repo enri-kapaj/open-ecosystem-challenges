@@ -14,9 +14,9 @@ data:
     connectors:
       spanmetrics:
         dimensions:
-          - name: hotrod.namespace
-          - name: hotrod.pod.name
-          - name: hotrod.pod.hash
+          - name: hotrod_namespace
+          - name: hotrod_pod_name
+          - name: hotrod_pod_hash
 
     exporters:
       debug:

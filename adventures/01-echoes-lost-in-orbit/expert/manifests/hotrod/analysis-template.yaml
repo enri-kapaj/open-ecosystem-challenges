@@ -47,8 +47,8 @@ spec:
             histogram_quantile(0.95,
               sum by (le) (
                 rate(traces_spanmetrics_latency_bucket{
-                  hotrod.namespace="{{args.namespace}}",
-                  hotrod.pod.hash="{{args.canary-hash}}"
+                  hotrod_namespace="{{args.namespace}}",
+                  hotrod_pod_hash="{{args.canary-hash}}"
                 }[2m])
               )
             )
