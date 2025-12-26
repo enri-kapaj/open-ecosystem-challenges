@@ -26,6 +26,8 @@ data:
         tls:
           insecure: true
 
+        prometheus:
+          endpoint: "0.0.0.0:8889"
     extensions:
       health_check:
         endpoint: 0.0.0.0:13133
@@ -38,5 +40,5 @@ data:
           exporters: [debug, otlp, spanmetrics]
         metrics:
           receivers: [spanmetrics]
-          exporters: [debug]
+          exporters: [prometheus,debug]
           
