@@ -36,4 +36,7 @@ data:
         traces:
           receivers: [otlp]
           exporters: [debug, otlp, spanmetrics]
+        metrics:
+          receivers: [spanmetrics]
+          exporters: [debug]
           
