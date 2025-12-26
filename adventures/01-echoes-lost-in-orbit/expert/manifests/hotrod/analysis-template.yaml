@@ -52,5 +52,21 @@ spec:
                 }[2m])
               )
             ) OR on() vector(0)
+    - name: canary-traffic-min-0_05-reqs
+      initialDelay: 30s
+      interval: 10s
+      count: 3
+      successCondition: result[0] >= 0.05
+      failureLimit: 2
+      inconclusiveLimit: 3
+      consecutiveErrorLimit: 2
+      provider:
+        prometheus:
+          address: http://prometheus-server.prometheus.svc.cluster.local
+          query: |
+            sum(rate(hotrod_requests_total{
+              namespace="{{args.namespace}}",
+              rollouts_pod_template_hash="{{args.canary-hash}}"
+            }[2m]))
 
 
