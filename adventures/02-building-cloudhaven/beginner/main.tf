@@ -29,6 +29,10 @@ terraform {
   #
   #       p.s. i think you need to run `tofu init -migrate-state` after adding
   #       the backend config or something like that
+    backend "gcs" {
+    bucket  = "cloudhaven-tfstate"
+    prefix  = "tofu/state"
+  }
 }
 
 # -----------------------------------------------------------------------------
