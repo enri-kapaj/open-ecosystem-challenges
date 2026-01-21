@@ -27,7 +27,7 @@ provider "google" {
 # Test: Apply Infrastructure and Verify Districts
 # ============================================================================
 run "apply_districts" {
-  # command = ??? # not sure if plan or apply here
+   command = apply # not sure if plan or apply here
 
   # check vault names for each district - should be cloudhaven-{name}-vault or smth
   # the districts are: north-market, south-bazaar, scholars-district
@@ -40,7 +40,17 @@ run "apply_districts" {
   # this should be enough to pass but feel free to add more tests if u want
 
   assert {
-    condition     = var.name == ""
-    error_message = "tests are not implemented yet"
+    condition     = output.districts["north-market"].ledger.disk_size == 20
+    error_message = "north-market should have 20GB disk (standard tier)"
+  }
+
+  assert {
+    condition     = output.districts["south-bazaar"].ledger.disk_size == 10
+    error_message = "south-bazaar should have 10GB disk (minimal tier)"
+  }
+
+  assert {
+    condition     = output.districts["scholars-district"].ledger.disk_size == 50
+    error_message = "scholars-district should have 50GB disk (critical tier)"
   }
 }
