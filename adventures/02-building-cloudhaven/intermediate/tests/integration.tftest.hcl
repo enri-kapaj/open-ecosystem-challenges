@@ -39,6 +39,23 @@ run "apply_districts" {
   #
   # this should be enough to pass but feel free to add more tests if u want
 
+  # Verify vault names follow the pattern: cloudhaven-{district-name}-vault
+  assert {
+    condition     = output.districts["north-market"].vault.name == "cloudhaven-north-market-vault"
+    error_message = "north-market vault should be named cloudhaven-north-market-vault"
+  }
+
+  assert {
+    condition     = output.districts["south-bazaar"].vault.name == "cloudhaven-south-bazaar-vault"
+    error_message = "south-bazaar vault should be named cloudhaven-south-bazaar-vault"
+  }
+
+  assert {
+    condition     = output.districts["scholars-district"].vault.name == "cloudhaven-scholars-district-vault"
+    error_message = "scholars-district vault should be named cloudhaven-scholars-district-vault"
+  }
+
+  # Verify ledger disk sizes based on tier
   assert {
     condition     = output.districts["north-market"].ledger.disk_size == 20
     error_message = "north-market should have 20GB disk (standard tier)"
