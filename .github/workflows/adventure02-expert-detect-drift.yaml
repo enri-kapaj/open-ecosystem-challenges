@@ -116,7 +116,7 @@ jobs:
         if: steps.plan.outputs.drift == 'true'
         uses: peter-evans/create-pull-request@v8
         with:
-          draft: ture # See https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#workarounds-to-trigger-further-workflow-runs
+          draft: true # See https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#workarounds-to-trigger-further-workflow-runs
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "fix: reconcile infrastructure drift"
           title: "🚨 Infrastructure Drift Detected"
