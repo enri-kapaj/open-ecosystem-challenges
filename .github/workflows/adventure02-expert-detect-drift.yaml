@@ -55,7 +55,25 @@ jobs:
         id: plan
         working-directory: ${{ env.WORKING_DIR }}
         run: |
-          echo "drift=false" >> $GITHUB_OUTPUT
+            # Run plan and save to file
+            tofu plan -detailed-exitcode -out=tfplan > plan.txt 2>&1 || EXIT_CODE=$?
+            
+            # tofu plan -detailed-exitcode exit codes:
+            # 0 = no changes (success)
+            # 1 = error
+            # 2 = changes present (success with changes)
+            
+            if [ "${EXIT_CODE:-0}" -eq 2 ]; then
+              echo "drift=true" >> $GITHUB_OUTPUT
+              echo "Drift detected!"
+            elif [ "${EXIT_CODE:-0}" -eq 0 ]; then
+              echo "drift=false" >> $GITHUB_OUTPUT
+              echo "No drift detected."
+            else
+              echo "Error running tofu plan"
+              cat plan.txt
+              exit 1
+            fi
 
       # ----------------------------------------------------------------------
       # Generate Drift Log Entry (only if drift detected)
@@ -98,7 +116,7 @@ jobs:
         if: steps.plan.outputs.drift == 'true'
         uses: peter-evans/create-pull-request@v8
         with:
-          draft: always-true # See https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#workarounds-to-trigger-further-workflow-runs
+          draft: ture # See https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#workarounds-to-trigger-further-workflow-runs
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "fix: reconcile infrastructure drift"
           title: "🚨 Infrastructure Drift Detected"

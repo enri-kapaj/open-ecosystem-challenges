@@ -80,6 +80,8 @@ jobs:
     services:
       gcp-api-mock:
         image: ghcr.io/katharinasick/gcp-api-mock:v1.1.4
+        ports:
+          - 8080:8080
 
     steps:
       - name: 📥 Checkout
@@ -117,6 +119,12 @@ jobs:
 
       - name: 🔒 Scan for Vulnerabilities
         uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: 'config'
+          scan-ref: ${{ env.WORKING_DIR }}
+          format: 'json'
+          output: 'vulnerabilities.json'
+          exit-code: 0
 
       - name: 📊 Count Vulnerabilities
         id: count
@@ -176,4 +184,14 @@ jobs:
             });
 
       - name: 🚫 Fail on Blocking Vulnerabilities
-        run: echo "uhh... nevermind"
+        run: |
+          critical=${{ steps.count.outputs.critical }}
+          high=${{ steps.count.outputs.high }}
+          
+          if [ "$critical" -gt 0 ] || [ "$high" -gt 0 ]; then
+            echo "❌ Found $critical critical and $high high severity vulnerabilities"
+            echo "Please resolve these vulnerabilities before merging."
+            exit 1
+          else
+            echo "✅ No blocking vulnerabilities found"
+          fi
