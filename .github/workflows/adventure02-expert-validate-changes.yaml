@@ -80,8 +80,6 @@ jobs:
     services:
       gcp-api-mock:
         image: ghcr.io/katharinasick/gcp-api-mock:v1.1.4
-        env:
-          STORAGE_EMULATOR_HOST: http://localhost:8080
         ports:
           - 8080:8080
 
@@ -101,6 +99,8 @@ jobs:
 
       - name: 🧪 Run tests
         working-directory: ${{ env.WORKING_DIR }}
+        env:
+          STORAGE_EMULATOR_HOST: http://localhost:8080
         run: tofu test
 
   # ----------------------------------------------------------------------------
