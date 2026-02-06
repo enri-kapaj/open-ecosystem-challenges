@@ -15,7 +15,11 @@
   "postStartCommand": "bash /workspaces/${localWorkspaceFolderBasename}/.devcontainer/03-the-ai-observatory_01-beginner/post-start.sh",
   "customizations": {
     "vscode": {
-      "extensions": []
+      "extensions": [],
+      "settings": {
+        "python.languageServer": "None",
+        "python.analysis.indexing": false
+      }
     },
     "codespaces": {
       "openFiles": [
